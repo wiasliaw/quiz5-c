@@ -1,6 +1,3 @@
-# Entry file
-PROD_ENTRY := main
-
 # Directory definitions
 INC_DIR := include
 SRC_DIR := src
@@ -14,15 +11,20 @@ CFLAGS := -Wall -I$(INC_DIR)
 INCS_FILES = $(wildcard $(INC_DIR)/*.h)
 SRCS_FILES = $(wildcard $(SRC_DIR)/*.c)
 OBJS_FILES = $(SRCS_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-TARGET_FILES := $(BIN_DIR)/$(PROD_ENTRY)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-main:	$(OBJS_FILES)
+all: vec tinync
+
+vec: $(OBJ_DIR)/vec.o
 	@mkdir -p $(BIN_DIR)
-	gcc -o $(TARGET_FILES) $(OBJS_FILES)
+	gcc -o $(BIN_DIR)/vec $(OBJ_DIR)/vec.o
+
+tinync: $(OBJ_DIR)/tinync.o
+	@mkdir -p $(BIN_DIR)
+	gcc -o $(BIN_DIR)/tinync $(OBJ_DIR)/tinync.o
 
 clean:
 	-rm $(OBJ_DIR)/*.o $(TARGET_FILES)
